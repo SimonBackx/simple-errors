@@ -3,6 +3,10 @@ import { EncodeContext } from "@simonbackx/simple-encoding";
 
 import { isSimpleError,SimpleError } from './SimpleError';
 
+export function isSimpleErrors(e: any): e is SimpleErrors {
+    return e.errors && Array.isArray(e.errors) && e.errors.length > 0 && isSimpleError(e.errors[0])
+}
+
 // Error that is caused by a client and should be reported to the client
 export class SimpleErrors extends Error implements Encodeable {
     errors: SimpleError[];
@@ -13,10 +17,10 @@ export class SimpleErrors extends Error implements Encodeable {
     }
 
     addError(error: SimpleError | SimpleErrors) {
-        if (error instanceof SimpleError) {
+        if (isSimpleError(error)) {
             this.errors.push(error);
             this.message += "\n" + error.toString();
-        } else if (error instanceof SimpleErrors) {
+        } else if (isSimpleErrors(error)) {
             this.errors.push(...error.errors);
             this.message += "\n" + error.toString();
         } else {
@@ -79,8 +83,4 @@ export class SimpleErrors extends Error implements Encodeable {
             .map((e) => e.human)
             .join("\n");
     }
-}
-
-export function isSimpleErrors(e: any): e is SimpleErrors {
-    return e.errors && Array.isArray(e.errors) && e.errors.length > 0 && isSimpleError(e.errors[0])
 }
