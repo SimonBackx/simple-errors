@@ -90,3 +90,7 @@ export class SimpleError extends Error implements Encodeable {
         return this.human ?? this.message;
     }
 }
+
+export function isSimpleError(e: any): e is SimpleError {
+    return e.id && e.code && e.message && e.encode && e.doesMatchFields && e.doesMatchField
+}

@@ -1,7 +1,7 @@
 import { Data, Encodeable } from "@simonbackx/simple-encoding";
 import { EncodeContext } from "@simonbackx/simple-encoding";
 
-import { SimpleError } from './SimpleError';
+import { isSimpleError,SimpleError } from './SimpleError';
 
 // Error that is caused by a client and should be reported to the client
 export class SimpleErrors extends Error implements Encodeable {
@@ -79,4 +79,8 @@ export class SimpleErrors extends Error implements Encodeable {
             .map((e) => e.human)
             .join("\n");
     }
+}
+
+export function isSimpleErrors(e: any): e is SimpleErrors {
+    return e.errors && Array.isArray(e.errors) && e.errors.length > 0 && isSimpleError(e.errors[0])
 }
