@@ -92,5 +92,5 @@ export class SimpleError extends Error implements Encodeable {
 }
 
 export function isSimpleError(e: any): e is SimpleError {
-    return e.id && e.code && e.message && e.encode && e.doesMatchFields && e.doesMatchField
+    return typeof e.id == "string" && typeof e.code == "string" && typeof e.message == "string" && e.encode && e.doesMatchFields && e.doesMatchField
 }
