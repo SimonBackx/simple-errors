@@ -28,6 +28,18 @@ export class SimpleErrors extends Error implements Encodeable {
         }
     }
 
+    unshiftError(error: SimpleError | SimpleErrors) {
+        if (isSimpleError(error)) {
+            this.errors.unshift(error);
+            this.message += "\n" + error.toString();
+        } else if (isSimpleErrors(error)) {
+            this.errors.unshift(...error.errors);
+            this.message += "\n" + error.toString();
+        } else {
+            throw new Error("Unsupported addError");
+        }
+    }
+
     get statusCode(): number | undefined {
         return this.errors.find((e) => e.statusCode !== undefined)?.statusCode;
     }
