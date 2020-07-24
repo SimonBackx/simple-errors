@@ -12,7 +12,7 @@ export class SimpleErrors extends Error implements Encodeable {
     errors: SimpleError[];
 
     constructor(...errors: SimpleError[]) {
-        super(errors.map((e) => e.toString()).join("\n"));
+        super(errors.map((e) => e.message).join("\n"));
         this.errors = errors;
     }
 
@@ -86,6 +86,10 @@ export class SimpleErrors extends Error implements Encodeable {
             }
             throw this;
         }
+    }
+
+    get human(): string {
+        return this.getHuman()
     }
 
     /// Returns a human description of all the errors
