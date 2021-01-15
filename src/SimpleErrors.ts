@@ -54,12 +54,30 @@ export class SimpleErrors extends Error implements Encodeable {
         });
     }
 
+    /**
+     * @deprecated Renamed to hasCode
+     */
     containsCode(code: string): boolean {
-        return this.errors.findIndex((e) => e.code && e.code === code) !== -1;
+        return this.hasCode(code)
     }
 
+    hasCode(code: string): boolean {
+        return this.errors.findIndex((e) => e.hasCode(code)) !== -1;
+    }
+
+    getCode(code: string): SimpleError | undefined {
+        return this.errors.find((e) => e.hasCode(code))
+    }
+
+    /**
+     * @deprecated Renamed to hasFieldThatStartsWith
+     */
     containsFieldThatStartsWith(prefix: string): boolean {
-        return this.errors.findIndex((e) => e.field && e.field.startsWith(prefix)) !== -1;
+        return this.hasFieldThatStartsWith(prefix)
+    }
+
+    hasFieldThatStartsWith(prefix: string): boolean {
+        return this.errors.findIndex((e) => e.hasFieldThatStartsWith(prefix)) !== -1;
     }
 
     /**

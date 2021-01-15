@@ -1,4 +1,4 @@
-import { Data, Encodeable } from "@simonbackx/simple-encoding";
+import { Data, Decoder, Encodeable, PlainObject } from "@simonbackx/simple-encoding";
 import { EncodeContext } from "@simonbackx/simple-encoding";
 import { v4 as uuidv4 } from "uuid";
 
@@ -11,11 +11,17 @@ export class SimpleError extends Error implements Encodeable {
     field: string | undefined;
 
     /**
+     * Assign special meta data to an error that can be used for special handling of errors.
+     * This type is 'any', but use the decode methods to decode this first
+     */
+    meta: PlainObject | undefined;
+
+    /**
     * Used to determine the associated HTTP status code when thrown in an endpoint
     */
     statusCode?: number;
 
-    constructor(error: { code: string; message: string; human?: string; field?: string; statusCode?: number; id?: string }) {
+    constructor(error: { code: string; message: string; human?: string; field?: string; statusCode?: number; id?: string; meta?: PlainObject }) {
         super(error.message);
         this.code = error.code;
         this.message = error.message;
@@ -23,6 +29,7 @@ export class SimpleError extends Error implements Encodeable {
         this.field = error.field;
         this.statusCode = error.statusCode;
         this.id = error.id ?? this.generateID();
+        this.meta = error.meta
 
         if (Error.captureStackTrace) {
             Error.captureStackTrace(this, SimpleError);
@@ -47,6 +54,7 @@ export class SimpleError extends Error implements Encodeable {
             message: this.message,
             human: this.human,
             field: this.field,
+            meta: this.meta
         };
     }
 
@@ -57,7 +65,26 @@ export class SimpleError extends Error implements Encodeable {
             message: data.field("message").string,
             human: data.optionalField("human")?.string,
             field: data.optionalField("field")?.string,
+            meta: data.optionalField("meta")?.value
         });
+    }
+
+    hasCode(code: string): boolean {
+        return this.code === code
+    }
+
+    decodeMeta<T>(decoder: Decoder<T>): T {
+        return decoder.decode(this.meta)
+    }
+
+    getCode(code: string): SimpleError | undefined {
+        if (this.hasCode(code)) {
+            return this
+        }
+    }
+
+    hasFieldThatStartsWith(prefix: string): boolean {
+        return !!this.field && this.field.startsWith(prefix)
     }
 
     doesMatchFields(fields: string[]): boolean {
