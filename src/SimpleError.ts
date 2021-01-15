@@ -1,4 +1,4 @@
-import { Data, Decoder, Encodeable, PlainObject } from "@simonbackx/simple-encoding";
+import { Data, Decoder, Encodeable, ObjectData, PlainObject } from "@simonbackx/simple-encoding";
 import { EncodeContext } from "@simonbackx/simple-encoding";
 import { v4 as uuidv4 } from "uuid";
 
@@ -73,8 +73,8 @@ export class SimpleError extends Error implements Encodeable {
         return this.code === code
     }
 
-    decodeMeta<T>(decoder: Decoder<T>): T {
-        return decoder.decode(this.meta)
+    decodeMeta<T>(decoder: Decoder<T>, context: EncodeContext): T {
+        return decoder.decode(new ObjectData(this.meta, context))
     }
 
     getCode(code: string): SimpleError | undefined {
