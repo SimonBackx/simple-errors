@@ -1,5 +1,4 @@
-import { Data, Decoder, Encodeable, ObjectData, PlainObject } from "@simonbackx/simple-encoding";
-import { EncodeContext } from "@simonbackx/simple-encoding";
+import { Data, Encodeable, EncodeContext, PlainObject } from "@simonbackx/simple-encoding";
 import { v4 as uuidv4 } from "uuid";
 
 // Error that is caused by a client and should be reported to the client
@@ -71,10 +70,6 @@ export class SimpleError extends Error implements Encodeable {
 
     hasCode(code: string): boolean {
         return this.code === code
-    }
-
-    decodeMeta<T>(decoder: Decoder<T>, context: EncodeContext): T {
-        return decoder.decode(new ObjectData(this.meta, context))
     }
 
     getCode(code: string): SimpleError | undefined {
