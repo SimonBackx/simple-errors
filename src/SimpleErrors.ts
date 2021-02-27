@@ -112,8 +112,8 @@ export class SimpleErrors extends Error implements Encodeable {
     /// Returns a human description of all the errors
     getHuman(): string {
         return this.errors
-            .filter((e) => !!e.human)
-            .map((e) => e.human)
+            .filter((e) => !!e.getHuman())
+            .map((e) => e.getHuman())
             .join("\n");
     }
 }
