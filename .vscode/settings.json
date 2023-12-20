@@ -9,17 +9,28 @@
         "**/dist": true
     },
     "eslint.options": {
-        "extensions": [".js", ".ts", ".vue"]
+        "extensions": [
+            ".js",
+            ".ts",
+            ".vue"
+        ]
     },
     "vetur.validation.template": false,
     "vetur.format.enable": false,
     "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true
+        "source.fixAll.eslint": "explicit"
     },
     "editor.formatOnPaste": true,
     "eslint.format.enable": true,
-
     // Prettier acts fucked up in vue, typescript and javascript, so we let eslint format vue files
-    "eslint.validate": ["typescript", "javascript", "vue"],
-    "prettier.disableLanguages": ["typescript", "javascript", "vue"]
+    "eslint.validate": [
+        "typescript",
+        "javascript",
+        "vue"
+    ],
+    "prettier.disableLanguages": [
+        "typescript",
+        "javascript",
+        "vue"
+    ]
 }
