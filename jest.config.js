@@ -1,6 +1,6 @@
-const base = require("../jest.base.config")
+const base = require('../jest.base.config');
 
-base.setupFilesAfterEnv.push("./tests/jest.setup.ts")
-base.globalSetup = "./tests/jest.global.setup.ts";
+base.setupFilesAfterEnv.push('./tests/jest.setup.ts');
+base.globalSetup = './tests/jest.global.setup.ts';
 
 module.exports = base;
