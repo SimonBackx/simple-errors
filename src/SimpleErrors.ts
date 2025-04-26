@@ -2,8 +2,8 @@ import { Data, Encodeable, EncodeContext } from '@simonbackx/simple-encoding';
 
 import { isSimpleError, SimpleError } from './SimpleError';
 
-export function isSimpleErrors(e: any): e is SimpleErrors {
-    return e.errors && Array.isArray(e.errors) && e.errors.length > 0 && isSimpleError(e.errors[0]);
+export function isSimpleErrors(e: unknown): e is SimpleErrors {
+    return typeof e === 'object' && e !== null && 'errors' in e && Array.isArray(e.errors) && e.errors.length > 0 && isSimpleError(e.errors[0]);
 }
 
 // Error that is caused by a client and should be reported to the client
